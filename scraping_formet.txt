@@ -1,0 +1,21 @@
+{
+	category:[],
+	tag:[],
+	shop_product_id:
+	product_name: ,
+	availability: //yes or no,
+	price: ,
+	currency:, //USD, CAD, BDT
+	weight: ,
+	pieces:,
+	downloaded_pageLink:,
+	actual_pageLink:,
+	images:[],
+	comments:[comment:{
+									username:,
+						date:,
+						rating:,
+						comment_text:,
+						reply:comments[]
+					}] 
+}

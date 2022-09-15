@@ -1,0 +1,13 @@
+Product_fact,
+	product_id:mf1//unique,
+	shop_product_id://unique
+	product_dim_id:
+	product_category_id:,
+	availability: //yes or no,
+	price: ,
+	currency:, //USD, CAD, BDT
+	weight: ,
+	shop_id:,
+	pieces:,
+	inventory:,
+	scraped_at://datetime()UTC,

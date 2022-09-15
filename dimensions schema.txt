@@ -1,0 +1,16 @@
+product_dim:
+	product_id,
+	product_name,
+	downloaded_pageLink:,
+	actual_pageLink:,
+	images:,
+,
+category_dim,
+	category_id:,
+	category_name:,
+	category_type:,
+
+shop_dim,
+ shop_id:,
+ shop_name:,
+ branc_name:,
