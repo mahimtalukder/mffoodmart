@@ -1,12 +1,25 @@
 var fs = require('fs');
 const scraperObject = {
     url: 'https://www.mffoodmart.com/shop/',
-    async scraper(browser, catagoryUrl, directoryName) {
+    async scraper(browser, catagoryUrl, directoryName, page_num) {
         this.url = catagoryUrl;
+        page_num = 1;
         let page = await browser.newPage();
         // Navigate to the selected page
         await page.goto(this.url, { timeout: 0 });
         page.setDefaultNavigationTimeout(0);
+        const today_date = new Date().toISOString().split('T')[0];
+
+        let dir = './backUp_of_' + today_date + '/' + directoryName;
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir);
+        }
+        const catagoryPath = dir + "/page_" + page_num + ".html";
+        fs.writeFile(catagoryPath, await page.content(), function (err) {
+            if (err) {
+                console.log(err)
+            }
+        });
         let scrapedData = [];
         async function scrapeCurrentPage() {
             //save file in a specific folder
@@ -35,7 +48,7 @@ const scraperObject = {
                         dataObj['name'] = "";
                     }
                     const today_date = new Date().toISOString().split('T')[0];
-                    let dir = './backUp_of_' + today_date + '/' + directoryName;
+                    let dir = './backUp_of_' + today_date + '/' + directoryName +'/page_'+ page_num; 
                     if (!fs.existsSync(dir)) {
                         fs.mkdirSync(dir);
                     }
@@ -127,7 +140,8 @@ const scraperObject = {
                     //scraped_at
                     const date = new Date();
                     const utcStr = date.toUTCString();
-                    dataObj['scraped_at'] = utcStr;
+                    const scrapt = new Date(utcStr);
+                    dataObj['scraped_at'] = scrapt;
 
 
 
@@ -158,8 +172,22 @@ const scraperObject = {
                     await page.click('a.next.page-numbers');
                     this.url = await page.$eval('a.next.page-numbers', text => text.href);
                     await page.close();
+                    page_num = page_num + 1;
                     page = await browser.newPage();
                     await page.goto(this.url, { timeout: 0 });
+                
+                    const today_date = new Date().toISOString().split('T')[0];
+                    let dir = './backUp_of_' + today_date + '/' + directoryName;
+                    if (!fs.existsSync(dir)) {
+                        fs.mkdirSync(dir);
+                    }
+                    const catagoryPath = dir + "/page_" + page_num + ".html";
+                    fs.writeFile(catagoryPath, await page.content(), function (err) {
+                        if (err) {
+                            console.log(err)
+                        }
+                    });
+                    
                     return scrapeCurrentPage();
                 }
                 await page.close();
